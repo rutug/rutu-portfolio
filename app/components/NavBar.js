@@ -11,7 +11,7 @@ const NavigationBar = ({
     { label: 'About', href: '/about', icon: User },
     { label: 'Work', href: '/work', icon: Briefcase },
     { label: 'Blog', href: '/blog', icon: BookOpen },
-    { label: 'Gallery', href: '/gallery', icon: Image }
+    // { label: 'Gallery', href: '/gallery', icon: Image }
   ]
 }) => {
   const pathname = usePathname();
