@@ -6,7 +6,7 @@ import { FileDown, User } from 'lucide-react';
 import RainbowText from './components/Rainbow';
 
 export default function Home() { 
-  
+
   const info = headerIntro();
   const avatar = getAvatar();
   const buttons = getButtons();
@@ -16,7 +16,7 @@ export default function Home() {
       <RevealFx>
         <div className="text-center space-y-12">
           
-          {/* GIF Container */}
+          {/* GIF */}
           {avatar}
 
           {/* Header */}
