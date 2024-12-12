@@ -68,7 +68,7 @@ export default function About() {
               <h2 className="text-2xl font-medium text-gray-200 mb-6">About Me</h2>
               <div className="p-6">
                 <p className="text-gray-400 leading-relaxed">
-                  I'm a software engineer passionate about building elegant solutions...
+                  I&apos;m a software engineer passionate about building elegant solutions...
                 </p>
               </div>
             </section>
