@@ -1,29 +1,28 @@
 // In your parent component or page
 import ProjectCard from '../components/ProjectCard';
 import RevealFx from '../components/RevealFx';
-import demo1 from "../Logos/demo1.png"
+import bullmq from "../Logos/bullmq.png"
 import portfolio from "../Logos/portfolio.png"
 
 export default function Projects() {
   const projectsData = [
     {
-      id: 1,
-      title: "Portfolio Website",
-      image: portfolio,
-      description: "Personal portfolio website built with Next.js and TailwindCSS.",
-      technologies: ["React", "Next.js", "TailwindCSS"],
-      demoUrl: "https://rutu-portfolio-cyan.vercel.app/"
+        "id": 1,
+        "title": "Bullmq Dashboard",
+        "image": portfolio,
+        "description": "bullmq-dashboard is a web application that provides a user interface for managing BullMQ queues. It allows you to monitor and manage your queues easily through a web interface, making it simpler to visualize the state of your jobs and queues.",
+        "technologies": ["NodeJs", "Redis", "Docker"],
+        "demoUrl": "https://hub.docker.com/repository/docker/ethene7887/bullmq-dashboard/general"
     },
     {
-      id: 2,
-      title: "Demo1",
-      image: demo1,
-      description: "Full-featured e-commerce platform with cart and checkout functionality.",
-      technologies: ["Next.js", "MongoDB", "Stripe"],
-      demoUrl: "https://learn-nextjs-1-chi.vercel.app/"
-    },
-    // Add more projects...
-  ];
+      "id": 2,
+      "title": "Portfolio Website",
+      "image": bullmq,
+      "description": "Personal portfolio website built with Next.js and TailwindCSS.",
+      "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
+      "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
+    }  
+] 
 
   return (
     <RevealFx>

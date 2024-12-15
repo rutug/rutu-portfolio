@@ -10,17 +10,29 @@ const NavigationBar = ({
     { label: 'Home', href: '/', icon: Home },
     { label: 'About', href: '/about', icon: User },
     { label: 'Work', href: '/work', icon: Briefcase },
-    { label: 'Blog', href: '/blog', icon: BookOpen },
+    // { label: 'Blog', href: '/blog', icon: BookOpen },
   ]
 }) => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [currentTime, setCurrentTime] = useState('');
   const [location, setLocation] = useState('Fetching location...');
 
   useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+      
+      if (currentScrollY > lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
 
-    // Fetch location
     const getLocation = async () => {
       try {
         const cachedLocation = localStorage.getItem('userLocation');
@@ -46,7 +58,6 @@ const NavigationBar = ({
       }
     };
 
-    // Update time
     const updateTime = () => {
       const now = new Date();
       setCurrentTime(now.toLocaleTimeString('en-US', {
@@ -57,41 +68,31 @@ const NavigationBar = ({
       }));
     };
 
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    // Initial calls
     getLocation();
     updateTime();
 
-    // Set up intervals and listeners
     const timeInterval = setInterval(updateTime, 1000);
     window.addEventListener('scroll', handleScroll);
 
-    // Cleanup
     return () => {
       clearInterval(timeInterval);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [lastScrollY]);
+
+  const gridCols = `grid-cols-${items.length}`;
 
   return (
     <>
       {/* Desktop Navigation */}
       <div className="hidden md:flex justify-between items-center fixed top-0 left-0 right-0 px-6 py-2 z-50">
-        {/* Left - Location */}
         <div className="text-sm text-gray-400">
           {location}
         </div>
 
-        {/* Center - Navigation */}
         <div className="flex justify-center">
           <nav className={`transition-all duration-300 border border-gray-700/50 rounded-full px-4
-            ${isScrolled
-              ? 'backdrop-blur-md bg-black/20'
-              : 'backdrop-blur-sm bg-black/10'
-            }`}
+            ${isScrolled ? 'backdrop-blur-md bg-black/20' : 'backdrop-blur-sm bg-black/10'}`}
           >
             <div className="flex items-center space-x-2 h-12">
               {items.map((item) => (
@@ -99,7 +100,7 @@ const NavigationBar = ({
                   key={item.href}
                   href={item.href}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
-                  ${pathname === item.href
+                    ${pathname === item.href
                       ? 'bg-white/10 text-white scale-105 border border-white/20 shadow-lg shadow-white/10'
                       : 'text-gray-300 hover:bg-white/10 hover:text-white'
                     }`}
@@ -112,29 +113,42 @@ const NavigationBar = ({
           </nav>
         </div>
 
-        {/* Right - Time and Last Updated */}
         <div className="flex flex-col items-end text-sm text-gray-400">
           <div>{currentTime}</div>
           <div className="text-xs">Last updated: April 2024</div>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] p-4 bg-gradient-to-t from-black/20">
-        {/* Info Bar - Top */}
-        <div className="flex justify-between items-center text-xs text-gray-400 mb-4">
-          <div>{location}</div>
-          <div>Last updated: April 2024</div>
+      {/* Mobile Top Bar */}
+      <div className="md:hidden">
+        {/* First layer: Base background with gradient */}
+        <div className="fixed top-0 left-0 right-0 h-32 z-40 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none" />
+        
+        {/* Second layer: Content with blur */}
+        <div className="fixed top-0 left-0 right-0 z-50">
+          <div className="relative px-4 py-2 backdrop-blur-md bg-black/5">
+            <div className="flex justify-between items-center text-xs text-gray-400">
+              <div>{location}</div>
+              <div>
+                <div>{currentTime}</div>
+                <div className="text-right">Last updated: April 2024</div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Navigation */}
-        <nav className="relative">
-          <div className="grid grid-cols-4 bg-black/10 backdrop-blur-sm border border-gray-700/50 rounded-full">
+      {/* Mobile Navigation */}
+      <div className={`md:hidden fixed bottom-0 left-0 right-0 z-[100] p-4 bg-gradient-to-t from-black via-black/20 to-transparent
+        transform transition-transform duration-300 ${isVisible ? 'translate-y-0' : 'translate-y-full'}`}
+      >
+        <nav className="relative flex justify-center">
+          <div className={`inline-grid ${gridCols} bg-black/10 backdrop-blur-sm border border-gray-700/50 rounded-full`}>
             {items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="touch-manipulation" // Add this
+                className="touch-manipulation px-8"
               >
                 <div className="py-4 flex flex-col items-center">
                   <item.icon className={`w-5 h-5 mb-1 ${

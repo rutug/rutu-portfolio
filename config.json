@@ -1,0 +1,21 @@
+
+{
+    "work":[
+        {
+            "id": 1,
+            "title": "Bullmq Dashboard",
+            "image": "/Logos/portfolio.png",
+            "description": "bullmq-dashboard is a web application that provides a user interface for managing BullMQ queues. It allows you to monitor and manage your queues easily through a web interface, making it simpler to visualize the state of your jobs and queues.",
+            "technologies": ["Node js", "Redis", "docker"],
+            "demoUrl": "https://hub.docker.com/repository/docker/ethene7887/bullmq-dashboard/general"
+        },
+        {
+          "id": 2,
+          "title": "Portfolio Website",
+          "image": "",
+          "description": "Personal portfolio website built with Next.js and TailwindCSS.",
+          "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
+          "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
+        }  
+    ] 
+}

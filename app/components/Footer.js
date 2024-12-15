@@ -18,6 +18,8 @@ const Footer = () => {
         <span className="font-semibold text-cyan-600 dark:text-cyan-400">Tailwind</span>
         <span>•</span>
         <span className="font-semibold text-blue-500 dark:text-blue-300">React</span>
+        <span>•</span>
+        <span className="font-semibold text-blue-500 dark:text-pink-300">Framer Motion</span>
       </div>
     </footer>
   );

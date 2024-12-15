@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProjectCard = ({ projects }) => {
@@ -27,7 +27,6 @@ const ProjectCard = ({ projects }) => {
 
   return (
     <>
-      {/* Grid of Project Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project) => (
           <motion.div
@@ -60,11 +59,9 @@ const ProjectCard = ({ projects }) => {
         ))}
       </div>
 
-      {/* Expanded Card Modal */}
       <AnimatePresence>
         {selectedProject && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -73,7 +70,6 @@ const ProjectCard = ({ projects }) => {
               className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm cursor-pointer"
             />
 
-            {/* Modal Container */}
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden" onClick={handleBackdropClick}>
               <motion.div
                 layoutId={`card-${selectedProject.id}`}
@@ -84,7 +80,15 @@ const ProjectCard = ({ projects }) => {
                 transition={{ duration: 0.3, ease: "easeOut" }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Scrollable Content */}
+                {/* Close Button */}
+                <button
+                  onClick={() => setSelectedProject(null)}
+                  className="absolute right-2 top-2 p-2 text-gray-400 hover:text-white md:hidden z-10"
+                  aria-label="Close modal"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+
                 <div className="max-h-[80vh] overflow-y-auto">
                   <div className="p-6">
                     <div className="space-y-6">
