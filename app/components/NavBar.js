@@ -120,41 +120,36 @@ const NavigationBar = ({
       </div>
 
       {/* Mobile Navigation */}
-      <div className="fixed bottom-6 left-0 right-0 z-50 md:hidden">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-[100] p-4 bg-gradient-to-t from-black/20">
         {/* Info Bar - Top */}
-        <div className="flex justify-between items-center text-xs text-gray-400 px-6 mb-2">
+        <div className="flex justify-between items-center text-xs text-gray-400 mb-4">
           <div>{location}</div>
           <div>Last updated: April 2024</div>
         </div>
 
         {/* Navigation */}
-        <div className="flex justify-center">
-          <nav className={`transition-all duration-300 border border-gray-700/50 rounded-full
-            ${isScrolled
-              ? 'backdrop-blur-md bg-black/20'
-              : 'backdrop-blur-sm bg-black/10'
-            }`}
-          >
-            <div className="grid grid-cols-4 gap-2 h-16 px-4">
-              {items.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex flex-col items-center justify-center space-y-1 px-4 transition-all duration-300
-                  ${pathname === item.href
-                      ? 'text-white scale-110 relative after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-1.5 after:h-1.5 after:bg-blue-400 after:rounded-full'
-                      : 'text-gray-300 hover:text-white'
-                    }`}
-                >
-                  <item.icon className={`w-5 h-5 ${pathname === item.href ? 'text-blue-400' : ''}`} />
-                  <span className={`text-xs ${pathname === item.href ? 'font-medium' : ''}`}>
+        <nav className="relative">
+          <div className="grid grid-cols-4 bg-black/10 backdrop-blur-sm border border-gray-700/50 rounded-full">
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="touch-manipulation" // Add this
+              >
+                <div className="py-4 flex flex-col items-center">
+                  <item.icon className={`w-5 h-5 mb-1 ${
+                    pathname === item.href ? 'text-blue-400' : 'text-gray-400'
+                  }`} />
+                  <span className={`text-xs ${
+                    pathname === item.href ? 'text-white font-medium' : 'text-gray-400'
+                  }`}>
                     {item.label}
                   </span>
-                </Link>
-              ))}
-            </div>
-          </nav>
-        </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </nav>
       </div>
     </>
   );

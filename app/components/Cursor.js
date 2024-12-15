@@ -1,12 +1,12 @@
 'use client';
+import React, { useState, useEffect } from 'react';
 
-import React, { useEffect, useState } from 'react';
-
-const GlowingCursor = () => {
+const Cursor = () => {
+  const [mounted, setMounted] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     let requestId;
     let currentX = 0;
     let currentY = 0;
@@ -26,46 +26,33 @@ const GlowingCursor = () => {
     };
 
     const handleMouseMove = (e) => {
-      if (isTouch) return; // Ignore mouse events if touch is being used
       targetX = e.clientX;
       targetY = e.clientY;
     };
 
     const handleTouchMove = (e) => {
-      setIsTouch(true);
-      // Prevent scrolling while touching
-      e.preventDefault();
       const touch = e.touches[0];
       targetX = touch.clientX;
       targetY = touch.clientY;
     };
 
-    const handleTouchEnd = () => {
-      // Optional: hide or fade out the glow when touch ends
-      // You can implement additional logic here if needed
-    };
-
-    // Mouse events
+    // Add both mouse and touch event listeners
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
+    window.addEventListener('touchstart', handleTouchMove, { passive: true });
     
-    // Touch events
-    window.addEventListener('touchstart', handleTouchMove, { passive: false });
-    window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd);
-
     requestId = requestAnimationFrame(updatePosition);
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchstart', handleTouchMove);
       window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('touchstart', handleTouchMove);
       cancelAnimationFrame(requestId);
     };
-  }, [isTouch]);
+  }, []);
 
-  // Adjust size based on device type
-  const size = isTouch ? 500 : 1500; // Smaller size for mobile
+  // Don't render anything on server side
+  if (!mounted) return null;
 
   return (
     <div
@@ -74,8 +61,8 @@ const GlowingCursor = () => {
         left: `${position.x}px`,
         top: `${position.y}px`,
         transform: 'translate(-50%, -50%)',
-        width: `${size}px`,
-        height: `${size}px`,
+        width: typeof window !== 'undefined' && window.innerWidth < 768 ? '800px' : '1500px',
+        height: typeof window !== 'undefined' && window.innerWidth < 768 ? '800px' : '1500px',
         background: `
           radial-gradient(
             circle at center,
@@ -87,12 +74,10 @@ const GlowingCursor = () => {
           )
         `,
         filter: 'blur(30px)',
-        willChange: 'transform',
-        opacity: isTouch ? 0.8 : 1, // Slightly reduced opacity for touch devices
-        visibility: position.x === 0 && position.y === 0 ? 'hidden' : 'visible' // Hide until first interaction
+        willChange: 'transform'
       }}
     />
   );
 };
 
-export default GlowingCursor;
+export default Cursor;

@@ -1,5 +1,6 @@
 // In your parent component or page
 import ProjectCard from '../components/ProjectCard';
+import RevealFx from '../components/RevealFx';
 import demo1 from "../Logos/demo1.png"
 import portfolio from "../Logos/portfolio.png"
 
@@ -25,13 +26,15 @@ export default function Projects() {
   ];
 
   return (
-    <div className="min-h-screen py-20">
-      <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl font-medium text-gray-200 mb-8">
-          My Projects
-        </h2>
-        <ProjectCard projects={projectsData} />
+    <RevealFx>
+      <div className="min-h-screen py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-medium text-gray-200 mb-8">
+            My Projects
+          </h2>
+          <ProjectCard projects={projectsData} />
+        </div>
       </div>
-    </div>
+    </RevealFx>
   );
 }
