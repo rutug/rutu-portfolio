@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
+    "critters": "^0.0.23",
     "lucide-react": "^0.468.0",
     "mongoose": "^8.8.4",
     "motion": "^11.14.1",
