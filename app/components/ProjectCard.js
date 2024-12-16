@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -7,10 +7,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const ProjectCard = ({ projects }) => {
   const [selectedProject, setSelectedProject] = useState(null);
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = 'hidden';
+      const viewportHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+      setModalPosition({ 
+        top: scrollY + (viewportHeight / 2),
+        left: window.innerWidth / 2
+      });
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -18,12 +25,6 @@ const ProjectCard = ({ projects }) => {
       document.body.style.overflow = 'unset';
     };
   }, [selectedProject]);
-
-  const handleBackdropClick = (e) => {
-    if (e.target === e.currentTarget) {
-      setSelectedProject(null);
-    }
-  };
 
   return (
     <>
@@ -66,33 +67,34 @@ const ProjectCard = ({ projects }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={handleBackdropClick}
-              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm cursor-pointer"
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+              onClick={() => setSelectedProject(null)}
             />
 
-            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden" onClick={handleBackdropClick}>
+            <motion.div 
+              className="fixed z-50 flex items-center justify-center inset-0 p-4 md:p-8"
+              onClick={() => setSelectedProject(null)}
+            >
               <motion.div
                 layoutId={`card-${selectedProject.id}`}
-                className="relative w-[90%] max-w-4xl bg-gray-900/95 rounded-lg border border-gray-700/50 backdrop-blur-sm"
-                initial={{ scale: 1 }}
-                animate={{ scale: 1.15 }}
-                exit={{ scale: 1 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="relative w-[95%] md:w-[90%] max-w-4xl bg-gray-900/95 rounded-lg border border-gray-700/50 backdrop-blur-sm max-h-[90vh] overflow-hidden"
+                style={{
+                  transformOrigin: 'center center',
+                }}
                 onClick={(e) => e.stopPropagation()}
               >
-                {/* Close Button */}
                 <button
                   onClick={() => setSelectedProject(null)}
-                  className="absolute right-2 top-2 p-2 text-gray-400 hover:text-white md:hidden z-10"
+                  className="absolute right-3 top-3 p-2 text-gray-400 hover:text-white z-10 bg-gray-900/80 rounded-full"
                   aria-label="Close modal"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
 
-                <div className="max-h-[80vh] overflow-y-auto">
-                  <div className="p-6">
+                <div className="overflow-y-auto max-h-[90vh] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+                  <div className="p-4 md:p-6">
                     <div className="space-y-6">
-                      <motion.div layoutId={`image-container-${selectedProject.id}`} className="relative h-64 w-full">
+                      <motion.div layoutId={`image-container-${selectedProject.id}`} className="relative h-48 md:h-64 w-full">
                         <Image
                           src={selectedProject.image}
                           alt={selectedProject.title}
@@ -101,7 +103,7 @@ const ProjectCard = ({ projects }) => {
                         />
                       </motion.div>
 
-                      <motion.h2 layoutId={`title-${selectedProject.id}`} className="text-2xl font-medium text-gray-200">
+                      <motion.h2 layoutId={`title-${selectedProject.id}`} className="text-xl md:text-2xl font-medium text-gray-200">
                         {selectedProject.title}
                       </motion.h2>
 
@@ -145,7 +147,7 @@ const ProjectCard = ({ projects }) => {
                   </div>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
           </>
         )}
       </AnimatePresence>
