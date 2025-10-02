@@ -32,7 +32,7 @@ export default function Projects() {
       "description": "Personal portfolio website built with Next.js and TailwindCSS.",
       "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
       "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
-    } ,
+    },
     {
       "id": 4,
       "title": "Portfolio Website",
@@ -40,7 +40,7 @@ export default function Projects() {
       "description": "Personal portfolio website built with Next.js and TailwindCSS.",
       "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
       "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
-    } ,
+    },
     {
       "id": 5,
       "title": "Portfolio Website",
@@ -48,7 +48,7 @@ export default function Projects() {
       "description": "Personal portfolio website built with Next.js and TailwindCSS.",
       "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
       "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
-    } ,
+    },
     {
       "id": 6,
       "title": "Portfolio Website",
@@ -56,7 +56,7 @@ export default function Projects() {
       "description": "Personal portfolio website built with Next.js and TailwindCSS.",
       "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
       "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
-    }  ,
+    },
     {
       "id": 7,
       "title": "Portfolio Website",
@@ -64,7 +64,7 @@ export default function Projects() {
       "description": "Personal portfolio website built with Next.js and TailwindCSS.",
       "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
       "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
-    } ,
+    },
     {
       "id": 8,
       "title": "Portfolio Website",
@@ -76,8 +76,8 @@ export default function Projects() {
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem`,
       "technologies": ["React", "Next.js", "TailwindCSS", "Framer motion"],
       "demoUrl": "https://rutu-portfolio-cyan.vercel.app/"
-    }  
-] 
+    }
+  ];
 
   return (
     <RevealFx>
@@ -86,7 +86,24 @@ export default function Projects() {
           <h2 className="text-2xl font-medium text-gray-200 mb-8">
             My Projects
           </h2>
-          <ProjectCard projects={projectsData} />
+          
+          {/* Desktop: 3 columns grid layout */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projectsData.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+
+          {/* Mobile: Horizontal scrollable list */}
+          <div className="md:hidden">
+            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+              {projectsData.map((project) => (
+                <div key={project.id} className="w-80 flex-shrink-0">
+                  <ProjectCard project={project} />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </RevealFx>
