@@ -68,7 +68,7 @@ export default function Login() {
           {/* Header */}
           <div className="space-y-2">
             <h1 className="text-[8vw] md:text-[3vw] font-bold text-white">
-              Welcome Back!     
+              Welcome Back!
             </h1>
             <p className="text-[4vw] md:text-[18px] text-gray-400">
               Login to access your account
@@ -119,7 +119,7 @@ export default function Login() {
             </button>
 
             <div className="text-sm text-gray-400">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/signup" className="text-white hover:underline">
                 Sign up
               </Link>
