@@ -5,11 +5,11 @@ import { Heart } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="w-full py-4 text-center">
-      <div className="flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+    <footer className="w-full pt-4 pb-24 text-center md:pb-4">
+      <div className="flex flex-wrap items-center justify-center gap-2 px-4 text-sm text-gray-600 dark:text-gray-400">
         <span>Made with</span>
-        <Heart 
-          className="w-4 h-4 text-red-500 animate-pulse" 
+        <Heart
+          className="w-4 h-4 text-red-500 animate-pulse"
           fill="currentColor"
         />
         <span>using</span>

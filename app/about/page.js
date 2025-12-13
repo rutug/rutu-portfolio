@@ -4,7 +4,7 @@ import Timeline from "../components/Timeline";
 import AcademicDetail from "../components/Academics";
 import TechnologiesKnown from "../components/TechIcons";
 import { FileIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import docker from "../Logos/docker.png"
 import js from "../Logos/js.png"
 import linux from "../Logos/linux.png"
@@ -22,11 +22,30 @@ import mongodb from "../Logos/mongodb.png"
 export default function About() {
   const [activeSection, setActiveSection] = useState('about');
 
+  const [isNavVisible, setIsNavVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
   useEffect(() => {
     const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Mobile nav visibility logic
+      if (window.innerWidth < 1024) {
+        const scrollDelta = currentScrollY - lastScrollY.current;
+
+        // Hide on scroll down
+        if (scrollDelta > 5 && currentScrollY > 50) {
+          setIsNavVisible(false);
+        }
+        // Show on scroll up or if near top
+        else if (scrollDelta < -5 || currentScrollY < 50) {
+          setIsNavVisible(true);
+        }
+      }
+      lastScrollY.current = currentScrollY;
+
       const sections = document.querySelectorAll('section[id]');
-      const scrollPosition = window.scrollY;
-      
+
       let found = false;
       sections.forEach((section) => {
         const rect = section.getBoundingClientRect();
@@ -149,17 +168,17 @@ export default function About() {
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
-      <div className="w-full lg:w-1/4 lg:fixed lg:left-0 lg:h-screen bg-black/50 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none sticky top-0 z-10">
-        <div className="h-full flex items-center p-4 lg:p-12">
-          <nav className="w-full flex lg:flex-col gap-4 overflow-x-auto lg:overflow-visible py-2">
+      <div className={`w-full lg:w-1/4 lg:fixed lg:left-0 lg:h-screen bg-black/50 lg:bg-transparent backdrop-blur-sm lg:backdrop-blur-none sticky top-0 z-30 pt-32 lg:pt-0 transition-transform duration-300 ${isNavVisible ? 'translate-y-0' : '-translate-y-full lg:translate-y-0'}`}>
+        <div className="h-full flex items-center px-4 py-2 lg:p-12">
+          <nav className="w-full flex lg:flex-col gap-8 lg:gap-4 overflow-x-auto lg:overflow-visible py-2 scrollbar-thin">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`whitespace-nowrap px-4 py-3 transition-all duration-300 rounded-lg
-                  ${activeSection === item.id 
-                    ? 'bg-white/10 text-white text-lg font-medium translate-x-2' 
-                    : 'text-gray-400 hover:text-gray-200 hover:translate-x-2'
+                className={`whitespace-nowrap pb-2 text-sm lg:text-lg transition-all duration-300 text-left
+                  ${activeSection === item.id
+                    ? 'text-white font-medium border-b-2 border-blue-400 lg:border-b-0 lg:border-l-2 lg:pl-4'
+                    : 'text-gray-400 hover:text-gray-200 lg:hover:pl-2'
                   }`}
               >
                 {item.label}
@@ -207,7 +226,7 @@ export default function About() {
               <div className="w-full py-16">
                 <h2 className="text-3xl font-medium text-gray-200 mb-6">Technologies I Work With</h2>
                 <div className="rounded-lg border border-gray-700/50 backdrop-blur-sm bg-white/5 p-6">
-                  <TechnologiesKnown 
+                  <TechnologiesKnown
                     technologies={technologies}
                     iconsPerRow={4}
                     iconSize="md"

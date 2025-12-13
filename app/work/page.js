@@ -94,15 +94,13 @@ export default function Projects() {
             ))}
           </div>
 
-          {/* Mobile: Horizontal scrollable list */}
-          <div className="md:hidden">
-            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
-              {projectsData.map((project) => (
-                <div key={project.id} className="w-80 flex-shrink-0">
-                  <ProjectCard project={project} />
-                </div>
-              ))}
-            </div>
+          {/* Mobile: Vertical list */}
+          <div className="md:hidden grid grid-cols-1 gap-4">
+            {projectsData.map((project) => (
+              <div key={project.id} className="w-full">
+                <ProjectCard project={project} />
+              </div>
+            ))}
           </div>
         </div>
       </div>
