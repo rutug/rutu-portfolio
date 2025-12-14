@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, User, Briefcase, BookOpen } from 'lucide-react';
+import { Home, User, Briefcase, BookOpen, LogOut } from 'lucide-react';
 
 const NavigationBar = ({
   items = [
@@ -19,12 +19,17 @@ const NavigationBar = ({
   const [lastScrollY, setLastScrollY] = useState(0);
   const [currentTime, setCurrentTime] = useState('');
   const [location, setLocation] = useState('Fetching location...');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    // Check login status
+    const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
+
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setIsScrolled(currentScrollY > 20);
-      
+
       if (currentScrollY > lastScrollY) {
         setIsVisible(false);
       } else {
@@ -78,9 +83,13 @@ const NavigationBar = ({
       clearInterval(timeInterval);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [lastScrollY]);
+  }, [lastScrollY, pathname]);
 
-  const gridCols = `grid-cols-${items.length}`;
+  const handleLogout = () => {
+    window.location.href = '/logout';
+  };
+
+  const gridCols = `grid-cols-${items.length + (isLoggedIn ? 1 : 0)}`;
 
   return (
     <>
@@ -109,6 +118,15 @@ const NavigationBar = ({
                   <span>{item.label}</span>
                 </Link>
               ))}
+              {isLoggedIn && (
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-red-400 hover:bg-white/10 hover:text-red-300"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </button>
+              )}
             </div>
           </nav>
         </div>
@@ -123,7 +141,7 @@ const NavigationBar = ({
       <div className="md:hidden">
         {/* First layer: Base background with gradient */}
         <div className="fixed top-0 left-0 right-0 h-32 z-40 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none" />
-        
+
         {/* Second layer: Content with blur */}
         <div className="fixed top-0 left-0 right-0 z-50">
           <div className="relative px-4 py-2 backdrop-blur-md bg-black/5">
@@ -151,17 +169,28 @@ const NavigationBar = ({
                 className="touch-manipulation px-8"
               >
                 <div className="py-4 flex flex-col items-center">
-                  <item.icon className={`w-5 h-5 mb-1 ${
-                    pathname === item.href ? 'text-blue-400' : 'text-gray-400'
-                  }`} />
-                  <span className={`text-xs ${
-                    pathname === item.href ? 'text-white font-medium' : 'text-gray-400'
-                  }`}>
+                  <item.icon className={`w-5 h-5 mb-1 ${pathname === item.href ? 'text-blue-400' : 'text-gray-400'
+                    }`} />
+                  <span className={`text-xs ${pathname === item.href ? 'text-white font-medium' : 'text-gray-400'
+                    }`}>
                     {item.label}
                   </span>
                 </div>
               </Link>
             ))}
+            {isLoggedIn && (
+              <button
+                onClick={handleLogout}
+                className="touch-manipulation px-8"
+              >
+                <div className="py-4 flex flex-col items-center">
+                  <LogOut className="w-5 h-5 mb-1 text-red-400" />
+                  <span className="text-xs text-red-400">
+                    Logout
+                  </span>
+                </div>
+              </button>
+            )}
           </div>
         </nav>
       </div>
